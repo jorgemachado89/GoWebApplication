@@ -53,10 +53,14 @@ func main() {
 	http.ListenAndServe(":8088", nil)
 }*/
 
-func main() {
+/*func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "public"+r.URL.Path)
 	})
 
 	http.ListenAndServe(":8088", nil)
+}*/
+
+func main() {
+	http.ListenAndServe(":8088", http.FileServer(http.Dir("public")))
 }
