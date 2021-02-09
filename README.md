@@ -18,3 +18,4 @@ Go web application server
     * StripPrefix - Specifies a handler to handle URL that does not expect the passed prefix to exist
     * TimeoutHandler - Decorates the passed handler and timeouts according to the max duration passed and returns to the requester the msg also passed.
     * FileServer - Takes in a FileSystem object to implement possible custom FS although most of the times it will be passed the OS FS to serve local files.
+* The defer keyword defers the execution of the function call until the surrounding function returns.
