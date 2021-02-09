@@ -1,12 +1,6 @@
 package main
 
-import (
-	"io"
-	"log"
-	"net/http"
-	"os"
-	"strings"
-)
+import "net/http"
 
 /* type myHandler struct {
 	greeting string
@@ -22,7 +16,7 @@ import (
 	http.ListenAndServe(":8088", nil)
 }*/
 
-func handleContentType(path string) string {
+/*func handleContentType(path string) string {
 	var contentType string
 
 	switch {
@@ -54,6 +48,14 @@ func main() {
 		w.Header().Add("Content-Type", handleContentType(r.URL.Path))
 
 		io.Copy(w, f)
+	})
+
+	http.ListenAndServe(":8088", nil)
+}*/
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "public"+r.URL.Path)
 	})
 
 	http.ListenAndServe(":8088", nil)
