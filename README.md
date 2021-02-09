@@ -1,5 +1,8 @@
 # GoWebApplication
-Go web application server
+Go web application server.
+
+Built considering lessons took from PluralSight course: [
+Creating Web Applications with Go](https://app.pluralsight.com/library/courses/creating-web-applications-go-update)
 
 ## Notes
 
@@ -19,3 +22,6 @@ Go web application server
     * TimeoutHandler - Decorates the passed handler and timeouts according to the max duration passed and returns to the requester the msg also passed.
     * FileServer - Takes in a FileSystem object to implement possible custom FS although most of the times it will be passed the OS FS to serve local files.
 * The defer keyword defers the execution of the function call until the surrounding function returns.
+* Purpose of templates is to bind data to templates to generate documents
+* When considering template imports html vs text escapes text being pulled from the data. Great for dealing with security vulnerabilities.
+    * Use text import when dealing with non HTML content.
