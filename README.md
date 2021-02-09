@@ -12,7 +12,7 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 
 ### Go Server
 * GOPATH set to projects root directory: $HOME/Projects/go/go-web-application/server
-* In order for ```go install firstapp``` cmd to work, file structure %PROJECT_ROOT/src/firstapp/ must be in place.
+* In order for ```go install main``` cmd to work, file structure %PROJECT_ROOT/src/main/ must be in place.
 * When dealing with Handlers in Go to match URLs Go is gonna pick the one that has the most specific match of all patterns.
 * Handle vs HandleFunc Handlers provide greater flexibility.
 * There are several Built In Handlers that provide many of the repetitive logic required during web development.
@@ -25,3 +25,4 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 * Purpose of templates is to bind data to templates to generate documents
 * When considering template imports html vs text escapes text being pulled from the data. Great for dealing with security vulnerabilities.
     * Use text import when dealing with non HTML content.
+* Reusing template names overwrites the original. The last defined template with duplicate name stands.
