@@ -26,3 +26,5 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 * When considering template imports html vs text escapes text being pulled from the data. Great for dealing with security vulnerabilities.
     * Use text import when dealing with non HTML content.
 * Reusing template names overwrites the original. The last defined template with duplicate name stands.
+* Defining an empty template allows for optionaly redifining that same template in a later stage.
+    * The "block" function allows for the same effect.
