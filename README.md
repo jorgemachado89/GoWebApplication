@@ -28,3 +28,7 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 * Reusing template names overwrites the original. The last defined template with duplicate name stands.
 * Defining an empty template allows for optionaly redifining that same template in a later stage.
     * The "block" function allows for the same effect.
+* Pipelines containing functions and/or method calls expect these to return one or two values, being the second of the error type.
+* When dealing with template curly braces adding a minus "-" sign:
+    * right after the opening braces will trim all aforegoing white spaces 
+    * doing it before the closing braces will trim all preceding ones
