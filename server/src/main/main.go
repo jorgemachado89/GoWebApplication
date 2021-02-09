@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"html/template"
-	"os"
+	"log"
+	"net/http"
+	"text/template"
 )
 
 /* type myHandler struct {
@@ -65,11 +65,7 @@ func main() {
 	http.ListenAndServe(":8088", nil)
 }*/
 
-/*func main() {
-	http.ListenAndServe(":8088", http.FileServer(http.Dir("public")))
-}*/
-
-func main() {
+/* sfunc main() {
 	templateString := `Lemonade Stand Supply`
 	t, err := template.New("title").Parse(templateString)
 	if err != nil {
@@ -79,4 +75,32 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+} */
+
+func main() {
+	templates := populateTemplates()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestedFile := r.URL.Path[1:] // Slice initial slash character
+		t := templates.Lookup(requestedFile + ".html")
+		if t != nil {
+			err := t.Execute(w, nil)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	})
+	// Handle files prefixed with the following strings.
+	http.Handle("/img/", http.FileServer(http.Dir("public")))
+	http.Handle("/css/", http.FileServer(http.Dir("public")))
+
+	http.ListenAndServe(":8088", nil)
+}
+
+func populateTemplates() *template.Template {
+	result := template.New("templates")
+	const basePath = "templates"
+	template.Must(result.ParseGlob(basePath + "/*.html"))
+	return result
 }
