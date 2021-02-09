@@ -1,28 +1,60 @@
 package main
 
 import (
-	"fmt"
+	"io"
+	"log"
 	"net/http"
+	"os"
+	"strings"
 )
 
-type myHandler struct {
+/* type myHandler struct {
 	greeting string
-}
+} */
 
-func (myH myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+/* func (myH myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("%v world", myH.greeting)))
-}
+}*/
 
-func main() {
+/*func main() {
 	http.Handle("/", &myHandler{greeting: "Hello"})
 
 	http.ListenAndServe(":8088", nil)
+}*/
+
+func handleContentType(path string) string {
+	var contentType string
+
+	switch {
+	case strings.HasSuffix(path, "css"):
+		contentType = "text/css"
+	case strings.HasSuffix(path, "html"):
+		contentType = "text/html"
+	case strings.HasSuffix(path, "png"):
+		contentType = "image/png"
+	default:
+		contentType = "text/plain"
+	}
+
+	return contentType
 }
 
-/*func main() {
+func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello Go!"))
+		// w.Write([]byte("Hello Go!"))
+
+		f, err := os.Open("public" + r.URL.Path)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			log.Println(err)
+		}
+
+		defer f.Close()
+
+		w.Header().Add("Content-Type", handleContentType(r.URL.Path))
+
+		io.Copy(w, f)
 	})
 
 	http.ListenAndServe(":8088", nil)
-}*/
+}
