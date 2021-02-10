@@ -2,35 +2,75 @@ package main
 
 import (
 	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"os"
+	"main/viewmodel"
 )
 
-const tax = 6.75 / 100
+func main() {
+	templates := populateTemplates()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestedFile := r.URL.Path[1:]
+		template := templates[requestedFile+".html"]
+		var context interface{}
+		switch requestedFile {
+		case "shop":
+			context = viewmodel.NewShop()
+		default:
+			context = viewmodel.NewHome()
+		}
+		if template != nil {
+			err := template.Execute(w, context)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			w.WriteHeader(404)
+		}
+	})
 
-type Product struct {
-	Name  string
-	Price float32
-	SomeArray []string
+	/*x := func() bool {return true}
+	xt := reflect.TypeOf(x).Kind()
+
+	fmt.Printf("%T: %s\n", xt, xt)
+	fmt.Printf("reflect.TypeOf(x): %T", reflect.TypeOf(x))*/
+
+	http.Handle("/img/", http.FileServer(http.Dir("public")))
+	http.Handle("/css/", http.FileServer(http.Dir("public")))
+	http.ListenAndServe(":8000", nil)
 }
 
-const templateString = `
-{{- "Item Information" }}
-Name: {{ .Name }}
-Price: {{ printf "$%.2f" .Price }}
-Price with Tax: {{ calcTax .Price | printf "$%.2f" }}
-Length: {{ len .SomeArray }}
-`
-
-func main() {
-	p := Product{
-		Name:  "Lemonade",
-		Price: 2.16,
-		SomeArray: []string{"a", "b"},
+func populateTemplates() map[string]*template.Template {
+	result := make(map[string]*template.Template)
+	const basePath = "templates"
+	layout := template.Must(template.ParseFiles(basePath + "/_layout.html"))
+	template.Must(layout.ParseFiles(basePath+"/_header.html", basePath+"/_footer.html"))
+	dir, err := os.Open(basePath + "/content")
+	if err != nil {
+		panic("Failed to open template blocks directory: " + err.Error())
 	}
-	fm := template.FuncMap{}
-	fm["calcTax"] = func(price float32) float32 {
-		return p.Price * (1 + tax)
+	fis, err := dir.Readdir(-1)
+	if err != nil {
+		panic("Failed to read contents of content directory: " + err.Error())
 	}
-	t := template.Must(template.New("").Funcs(fm).Parse(templateString))
-	t.Execute(os.Stdout, p)
+	for _, fi := range fis {
+		f, err := os.Open(basePath + "/content/" + fi.Name())
+		if err != nil {
+			panic("Failed to open template '" + fi.Name() + "'")
+		}
+		content, err := ioutil.ReadAll(f)
+		if err != nil {
+			panic("Failed to read content from file '" + fi.Name() + "'")
+		}
+		f.Close()
+		tmpl := template.Must(layout.Clone())
+		_, err = tmpl.Parse(string(content))
+		if err != nil {
+			panic("Failed to parse contents of '" + fi.Name() + "' as template")
+		}
+		result[fi.Name()] = tmpl
+	}
+	return result
 }
