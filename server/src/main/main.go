@@ -6,12 +6,13 @@ import (
 	"net/http"
 	"os"
 	"main/controller"
+	"main/middleware"
 )
 
 func main() {
 	templates := populateTemplates()
 	controller.Startup(templates)
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8000", new (middleware.GzipMiddleware))
 }
 
 func populateTemplates() map[string]*template.Template {
