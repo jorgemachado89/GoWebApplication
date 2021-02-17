@@ -38,3 +38,6 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
     * nil
     * empty collection
 * When dealing with Logical tests all commands are evaluated even if the one of the parts is false.
+* There are some third party providing routes handling although we should always consider if the overhead of implementing our own routing mechanism exceeds the gain of using a tool built by someone else. Two valuable choices when considering going elsewhere:
+    * [Gorilla Mux](https://github.com/gorilla/mux)
+    * [HttpRouter](https://github.com/julienschmidt/httprouter)

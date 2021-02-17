@@ -10,14 +10,12 @@ import (
 
 type home struct {
 	homeTemplate			*template.Template
-	standLocatorTemplate	*template.Template
 	loginTemplate			*template.Template
 }
 
 func (h home) registerRoutes() {
 	http.HandleFunc("/", h.handleHome)
 	http.HandleFunc("/home", h.handleHome)
-	http.HandleFunc("/stand-locator", h.handleStandLocator)
 	http.HandleFunc("/login", h.handleLogin)
 }
 
@@ -26,14 +24,8 @@ func (h home) handleHome(w http.ResponseWriter, r *http.Request) {
 	h.homeTemplate.Execute(w, vm)
 }
 
-func (h home) handleStandLocator(w http.ResponseWriter, r *http.Request) {
-	vm := viewmodel.NewStandLocator()
-	h.standLocatorTemplate.Execute(w, vm)
-}
-
 func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
 	vm := viewmodel.NewLogin();
-	fmt.Printf("Start")
 	if r.Method == http.MethodPost {
 		err := r.ParseForm();
 		if err != nil {
