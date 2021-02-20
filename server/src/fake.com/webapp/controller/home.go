@@ -3,7 +3,7 @@ package controller
 import (
 	"html/template"
 	"net/http"
-	"main/viewmodel"
+	"fake.com/webapp/viewmodel"
 	"fmt"
 	"log"
 )
