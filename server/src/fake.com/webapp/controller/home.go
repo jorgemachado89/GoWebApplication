@@ -3,7 +3,7 @@ package controller
 import (
 	"html/template"
 	"net/http"
-	"main/viewmodel"
+	"fake.com/webapp/viewmodel"
 	"fmt"
 	"log"
 )
@@ -44,5 +44,6 @@ func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("Username: %v \n", r.FormValue("email"))
 		// fmt.Printf("Form: %v \n", r.Form)
 	}
+	w.Header().Add("Content-Type", "text/html")
 	h.loginTemplate.Execute(w, vm);
 }

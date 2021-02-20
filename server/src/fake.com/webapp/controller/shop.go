@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
-	"main/model"
-	"main/viewmodel"
+	"fake.com/webapp/model"
+	"fake.com/webapp/viewmodel"
 )
 
 type shop struct {

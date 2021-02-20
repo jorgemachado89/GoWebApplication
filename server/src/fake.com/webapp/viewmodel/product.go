@@ -2,8 +2,7 @@ package viewmodel
 
 import (
 	"html/template"
-
-	"main/model"
+	"fake.com/webapp/model"
 )
 
 type ProductViewModel struct {

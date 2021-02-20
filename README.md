@@ -41,3 +41,10 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 * There are some third party providing routes handling although we should always consider if the overhead of implementing our own routing mechanism exceeds the gain of using a tool built by someone else. Two valuable choices when considering going elsewhere:
     * [Gorilla Mux](https://github.com/gorilla/mux)
     * [HttpRouter](https://github.com/julienschmidt/httprouter)
+* HTTP Middleware common use cases:
+    * Logging
+    * Security Validations
+    * Request timeouts
+    * Response compression
+* Contexts are useful to apply a context based on the request context
+* Since Golang 1.6 modules are mandatory by default.

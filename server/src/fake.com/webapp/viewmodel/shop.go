@@ -2,8 +2,7 @@ package viewmodel
 
 import (
 	"fmt"
-
-	"main/model"
+	"fake.com/webapp/model"
 )
 
 type Shop struct {

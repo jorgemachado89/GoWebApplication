@@ -1,7 +1,7 @@
 package viewmodel
 
 import (
-	"main/model"
+	"fake.com/webapp/model"
 )
 
 type ShopDetail struct {
