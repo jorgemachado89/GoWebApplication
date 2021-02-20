@@ -6,6 +6,7 @@
 *.dylib
 
 server/bin/*
+server/pkg/
 
 client/node_modules/
 
