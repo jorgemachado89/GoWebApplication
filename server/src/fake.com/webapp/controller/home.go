@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"fake.com/webapp/viewmodel"
+	"fake.com/webapp/model"
 	"fmt"
 	"log"
 )
@@ -24,20 +25,28 @@ func (h home) handleHome(w http.ResponseWriter, r *http.Request) {
 	h.homeTemplate.Execute(w, vm)
 }
 
+func getFormData(r *http.Request) (username string, password string) {
+	return r.Form.Get("email"), r.Form.Get("password")
+}
+
 func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
 	vm := viewmodel.NewLogin();
 	if r.Method == http.MethodPost {
+
 		err := r.ParseForm();
 		if err != nil {
 			log.Println(fmt.Errorf("Error logging in %v: ", err));
 		}
-		email := r.Form.Get("email")
-		password := r.Form.Get("password")
-		if (email == "test@gmail.com" && password == "password") {
+
+		username, password := getFormData(r)
+
+		if user, err := model.Login(username, password); err == nil {
+			log.Printf("User %s has logged in successfuly.\n", user.GetUsername())
 			http.Redirect(w, r, "/home", http.StatusTemporaryRedirect)
 			return
 		} else {
-			vm.Email = email
+			log.Printf("Error validating User: %s - Password: %s | crendentials - %v \n", username, password, err)
+			vm.Email = username
 			vm.Password = password
 		}
 		// fmt.Printf("Initial Form: %v \n", r.Form)

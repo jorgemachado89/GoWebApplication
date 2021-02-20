@@ -25,6 +25,9 @@ func main() {
 	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{Next: new (middleware.GzipMiddleware)})
 }
 
+// INSERT INTO public.user(name, password) VALUES ('jorgemachado89', 'pass123');
+// SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'
+// sudo -u postgres psql -Atx "postgres://lss:lss@localhost/lss?sslmode=disable" -c "select * from public.user"
 func connectDB() *sql.DB {
 	connStr := "postgres://lss:lss@localhost/lss?sslmode=disable"
 	
