@@ -17,7 +17,7 @@ func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context();
 	ctx, cancel := context.WithTimeout(ctx, 3 * time.Second)
-	defer cancel()  // releases resources if slowOperation completes before timeout elapses
+	defer cancel()  // releases resources if operation completes before timeout elapses
 
 	r.WithContext(ctx)
 
@@ -26,6 +26,7 @@ func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		tm.Next.ServeHTTP(w, r)
 		ch <- struct{}{}
 	}()
+
 	select {
 	case <-ch:
 		return
