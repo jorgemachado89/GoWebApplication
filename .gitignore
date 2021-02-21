@@ -9,6 +9,7 @@ server/bin/*
 server/pkg/
 
 client/node_modules/
+server/pkg/
 
 # Test binary, built with `go test -c`
 *.test

@@ -5,14 +5,39 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"log"
+	"fmt"
+	_ "github.com/lib/pq"
+	"database/sql"
 	"fake.com/webapp/controller"
 	"fake.com/webapp/middleware"
+	"fake.com/webapp/model"
 )
 
 func main() {
 	templates := populateTemplates()
+
+	db := connectDB()
+	defer db.Close()
+
 	controller.Startup(templates)
+
 	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{Next: new (middleware.GzipMiddleware)})
+}
+
+// INSERT INTO public.user(name, password) VALUES ('jorgemachado89', 'pass123');
+// SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'
+// sudo -u postgres psql -Atx "postgres://lss:lss@localhost/lss?sslmode=disable" -c "select * from public.user"
+func connectDB() *sql.DB {
+	connStr := "postgres://lss:lss@localhost/lss?sslmode=disable"
+	
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatalln(fmt.Errorf("Unable to connect to Database: %v", err))
+	}
+
+	model.SetDatabase(db)
+	return db;
 }
 
 func populateTemplates() map[string]*template.Template {

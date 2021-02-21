@@ -48,3 +48,4 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
     * Response compression
 * Contexts are useful to apply a context based on the request context
 * Since Golang 1.6 modules are mandatory by default.
+* For using the PostGres Database the developer should start by initializing the driver prior to creating a connections pool.
