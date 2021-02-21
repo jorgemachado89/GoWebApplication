@@ -50,3 +50,19 @@ Creating Web Applications with Go](https://app.pluralsight.com/library/courses/c
 * Since Golang 1.6 modules are mandatory by default.
 * When using HTTPS in Go, the network protocol used will be HTTP/2
 * For using the PostGres Database the developer should start by initializing the driver prior to creating a connections pool.
+* HTTP/2
+    * Allows for request multiplexing
+        * In each TCP connection allows for multiple streams in the same connection without interference
+        * In each stream information is sent in frames instead of sending both body and header as a single unattached block
+    * Header Compression
+        * Splitting information in chuncks allows for better optimization
+            * Sending headers (C->S) in indeppendent frames allows for the server to start processing the request as soon as the minimum ammount of information necessary is available.
+            * Since both Client and Server will now know they are receiving solely headers they can apply compress and decompress algorithms.
+        * Reduces the ammount of most of the times fixed data volume being sent back and forth
+    * Secure by default
+        * THis isn't part of the protocol since it can work via HTTP and HTTPS although most organizations are not complying with non secure HTTP connections
+    * Server Push
+        * Allows for preemptively request resources such as CSS file dependencies without having the client explicitly request the resource.
+        * When such a request would have been made the resource would already be cached in the client side, rendering the request avoidable.
+        * Validation for Server Push assertion needs to be set up since not all clients are guaranteed to support it.
+        * Beware of using Server Push because the server is going to push the resource not knowing if the client is going to need it or not.
