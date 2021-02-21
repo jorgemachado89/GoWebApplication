@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+
 	"fake.com/webapp/controller"
 	"fake.com/webapp/middleware"
 )
@@ -12,7 +13,7 @@ import (
 func main() {
 	templates := populateTemplates()
 	controller.Startup(templates)
-	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{Next: new (middleware.GzipMiddleware)})
+	http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{Next: new(middleware.GzipMiddleware)})
 }
 
 func populateTemplates() map[string]*template.Template {
