@@ -23,7 +23,7 @@ func (h home) registerRoutes() {
 
 func validateServerPush(w http.ResponseWriter, r *http.Request) {
 	if pusher, ok := w.(http.Pusher); ok {
-		pusher.Push("/css/app.css", &http.PushOptions{
+		pusher.Push("/css/app.min.css", &http.PushOptions{
 			Header: http.Header{"Content-Type": []string{"text/css"}},
 		})
 	}

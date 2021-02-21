@@ -1,12 +1,13 @@
 package controller
 
 import (
-	"html/template"
-	"net/http"
-	"fake.com/webapp/viewmodel"
-	"fmt"
-	"log"
 	"encoding/json"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+
+	"fake.com/webapp/viewmodel"
 )
 
 type standLocator struct {
@@ -15,7 +16,7 @@ type standLocator struct {
 
 func (s1 standLocator) registerRoutes() {
 	http.HandleFunc("/stand-locator", s1.handleStandLocator)
-	http.HandleFunc("/api/stands", s1.handleApiSands)
+	http.HandleFunc("/api/stands", s1.handleAPISands)
 }
 
 func (s1 standLocator) handleStandLocator(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +24,7 @@ func (s1 standLocator) handleStandLocator(w http.ResponseWriter, r *http.Request
 	s1.standLocatorTemplate.Execute(w, vm)
 }
 
-func (s1 standLocator) handleApiSands(w http.ResponseWriter, r *http.Request) {
+func (s1 standLocator) handleAPISands(w http.ResponseWriter, r *http.Request) {
 	dec := json.NewDecoder(r.Body)
 	var loc struct {
 		ZipCode string `json:"zipCode"`
@@ -42,73 +43,73 @@ func (s1 standLocator) handleApiSands(w http.ResponseWriter, r *http.Request) {
 }
 
 var coords []viewmodel.StandCoordinate = []viewmodel.StandCoordinate{
-	viewmodel.StandCoordinate {
-		Latitude : 37.409,
-		Longitude : -122.06,
-		Title : "Bobby's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.4092,
-		Longitude : -122.061,
-		Title : "Macy's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.4094,
-		Longitude : -122.06,
-		Title : "Juan's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.41,
-		Longitude : -122.065,
-		Title : "Allison's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.415,
-		Longitude : -122.07,
-		Title : "Chen's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.4217,
-		Longitude : -122.075,
-		Title : "Matthew's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.4206,
-		Longitude : -122.08,
-		Title : "Alice's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.4205,
-		Longitude : -122.083,
-		Title : "Kara's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.414,
-		Longitude : -122.09,
-		Title : "Fred's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.412,
-		Longitude : -122.09,
-		Title : "Jake's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.41,
-		Longitude : -122.093,
-		Title : "Wallace's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.416,
-		Longitude : -122.095,
-		Title : "Gromit's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.41,
-		Longitude : -122.1,
-		Title : "Kirk's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.41,
-		Longitude : -122.102,
-		Title : "Lorelei's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.412,
-		Longitude : -122.099,
-		Title : "Rebecca's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.407,
-		Longitude : -122.1025,
-		Title : "Chris's stand",
-	}, viewmodel.StandCoordinate {
-		Latitude : 37.423,
-		Longitude : -122.1025,
-		Title : "Carson's stand",
+	{
+		Latitude:  37.409,
+		Longitude: -122.06,
+		Title:     "Bobby's stand",
+	}, {
+		Latitude:  37.4092,
+		Longitude: -122.061,
+		Title:     "Macy's stand",
+	}, {
+		Latitude:  37.4094,
+		Longitude: -122.06,
+		Title:     "Juan's stand",
+	}, {
+		Latitude:  37.41,
+		Longitude: -122.065,
+		Title:     "Allison's stand",
+	}, {
+		Latitude:  37.415,
+		Longitude: -122.07,
+		Title:     "Chen's stand",
+	}, {
+		Latitude:  37.4217,
+		Longitude: -122.075,
+		Title:     "Matthew's stand",
+	}, {
+		Latitude:  37.4206,
+		Longitude: -122.08,
+		Title:     "Alice's stand",
+	}, {
+		Latitude:  37.4205,
+		Longitude: -122.083,
+		Title:     "Kara's stand",
+	}, {
+		Latitude:  37.414,
+		Longitude: -122.09,
+		Title:     "Fred's stand",
+	}, {
+		Latitude:  37.412,
+		Longitude: -122.09,
+		Title:     "Jake's stand",
+	}, {
+		Latitude:  37.41,
+		Longitude: -122.093,
+		Title:     "Wallace's stand",
+	}, {
+		Latitude:  37.416,
+		Longitude: -122.095,
+		Title:     "Gromit's stand",
+	}, {
+		Latitude:  37.41,
+		Longitude: -122.1,
+		Title:     "Kirk's stand",
+	}, {
+		Latitude:  37.41,
+		Longitude: -122.102,
+		Title:     "Lorelei's stand",
+	}, {
+		Latitude:  37.412,
+		Longitude: -122.099,
+		Title:     "Rebecca's stand",
+	}, {
+		Latitude:  37.407,
+		Longitude: -122.1025,
+		Title:     "Chris's stand",
+	}, {
+		Latitude:  37.423,
+		Longitude: -122.1025,
+		Title:     "Carson's stand",
 	},
 }

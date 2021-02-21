@@ -12,6 +12,9 @@ import (
 	"fake.com/webapp/controller"
 	"fake.com/webapp/middleware"
 	"fake.com/webapp/model"
+
+	_ "net/http/pprof"
+
 	_ "github.com/lib/pq"
 )
 
