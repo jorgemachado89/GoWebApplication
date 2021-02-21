@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"compress/gzip"
+	"io"7
 	"net/http"
 	"strings"
-	"io"
-	"compress/gzip"
 )
 
 type GzipMiddleware struct {
@@ -15,10 +15,10 @@ func (gm GzipMiddleware) validateAcceptGzipEnconding(w *http.ResponseWriter, r *
 	encoding := r.Header.Get("Accept-Encoding")
 	if !strings.Contains(encoding, "gzip") {
 		gm.Next.ServeHTTP(*w, r)
-		return false;
+		return false
 	}
 
-	return true;
+	return true
 }
 
 func (gm GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -30,20 +30,37 @@ func (gm GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Encoding", "gzip")
 		gzipwriter := gzip.NewWriter(w)
 		defer gzipwriter.Close()
-		grw := gzipReponseWriter {
-			ResponseWriter: w,
-			Writer: gzipwriter,
+
+		if pusher, ok := w.(http.Pusher); ok {
+			rw := gzipPusherResponseWriter {
+				gzipResponseWriter: gzipResponseWriter {
+					ResponseWriter: w,
+					Writer:         gzipwriter,
+				}, 
+				Pusher: pusher
+			}
+		} else {
+			rw := gzipResponseWriter{
+				ResponseWriter: w,
+				Writer:         gzipwriter,
+			}
 		}
-		gm.Next.ServeHTTP(grw, r)
+
+		gm.Next.ServeHTTP(rw, r)
 	}
 
 }
 
-type gzipReponseWriter struct {
+type gzipResponseWriter struct {
 	http.ResponseWriter
 	io.Writer
 }
 
-func (grw gzipReponseWriter) Write(data []byte) (int, error) {
-	return grw.Writer.Write(data);
+type gzipPusherResponseWriter struct {
+	gzipResponseWriter
+	http.Pusher
+}
+
+func (grw gzipResponseWriter) Write(data []byte) (int, error) {
+	return grw.Writer.Write(data)
 }

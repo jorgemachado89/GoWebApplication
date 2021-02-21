@@ -6,9 +6,9 @@ import (
 )
 
 type User struct {
-	id int
-	name string
-	password string	
+	id       int
+	name     string
+	password string
 }
 
 func (u User) GetUsername() string {
@@ -16,8 +16,8 @@ func (u User) GetUsername() string {
 }
 
 func Login(user, password string) (*User, error) {
-	result := &User{};
-	row := db.QueryRow (`
+	result := &User{}
+	row := db.QueryRow(`
 		SELECT id, name
 		FROM public.user
 		WHERE name = $1 AND password = $2

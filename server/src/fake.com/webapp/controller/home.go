@@ -1,17 +1,18 @@
 package controller
 
 import (
-	"html/template"
-	"net/http"
-	"fake.com/webapp/viewmodel"
-	"fake.com/webapp/model"
 	"fmt"
+	"html/template"
 	"log"
+	"net/http"
+
+	"fake.com/webapp/model"
+	"fake.com/webapp/viewmodel"
 )
 
 type home struct {
-	homeTemplate			*template.Template
-	loginTemplate			*template.Template
+	homeTemplate  *template.Template
+	loginTemplate *template.Template
 }
 
 func (h home) registerRoutes() {
@@ -20,7 +21,16 @@ func (h home) registerRoutes() {
 	http.HandleFunc("/login", h.handleLogin)
 }
 
+func validateServerPush(w http.ResponseWriter, r *http.Request) {
+	if pusher, ok := w.(http.Pusher); ok {
+		pusher.Push("/css/app.css", &http.PushOptions{
+			Header: http.Header{"Content-Type": []string{"text/css"}},
+		})
+	}
+}
+
 func (h home) handleHome(w http.ResponseWriter, r *http.Request) {
+	validateServerPush(w, r)
 	vm := viewmodel.NewHome()
 	h.homeTemplate.Execute(w, vm)
 }
@@ -30,12 +40,12 @@ func getFormData(r *http.Request) (username string, password string) {
 }
 
 func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
-	vm := viewmodel.NewLogin();
+	vm := viewmodel.NewLogin()
 	if r.Method == http.MethodPost {
 
-		err := r.ParseForm();
+		err := r.ParseForm()
 		if err != nil {
-			log.Println(fmt.Errorf("Error logging in %v: ", err));
+			log.Println(fmt.Errorf("Error logging in %v: ", err))
 		}
 
 		username, password := getFormData(r)
@@ -54,5 +64,5 @@ func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("Form: %v \n", r.Form)
 	}
 	w.Header().Add("Content-Type", "text/html")
-	h.loginTemplate.Execute(w, vm);
+	h.loginTemplate.Execute(w, vm)
 }
