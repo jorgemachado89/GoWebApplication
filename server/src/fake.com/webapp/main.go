@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"fake.com/webapp/controller"
+	"fake.com/webapp/middleware"
 	"fake.com/webapp/model"
 	_ "github.com/lib/pq"
 )
@@ -21,8 +22,8 @@ func main() {
 	defer db.Close()
 
 	controller.Startup(templates)
-	// http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{Next: new(middleware.GzipMiddleware)})
-	http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", nil)
+	http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{Next: new(middleware.GzipMiddleware)})
+	// http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", nil)
 }
 
 // INSERT INTO public.user(name, password) VALUES ('jorgemachado89', 'pass123');

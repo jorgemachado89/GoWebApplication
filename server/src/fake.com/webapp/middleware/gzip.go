@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"compress/gzip"
-	"io"7
+	"io"
 	"net/http"
 	"strings"
 )
@@ -31,16 +31,18 @@ func (gm GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		gzipwriter := gzip.NewWriter(w)
 		defer gzipwriter.Close()
 
+		var rw http.ResponseWriter
+
 		if pusher, ok := w.(http.Pusher); ok {
-			rw := gzipPusherResponseWriter {
-				gzipResponseWriter: gzipResponseWriter {
+			rw = gzipPusherResponseWriter{
+				gzipResponseWriter: gzipResponseWriter{
 					ResponseWriter: w,
 					Writer:         gzipwriter,
-				}, 
-				Pusher: pusher
+				},
+				Pusher: pusher,
 			}
 		} else {
-			rw := gzipResponseWriter{
+			rw = gzipResponseWriter{
 				ResponseWriter: w,
 				Writer:         gzipwriter,
 			}
